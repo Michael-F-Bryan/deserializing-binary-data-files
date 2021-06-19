@@ -2,7 +2,7 @@ use std::{
     fmt::{self, Debug, DebugStruct, Formatter},
     fs::File,
     io::{Error, Read, Write},
-    mem::{self, MaybeUninit},
+    mem,
 };
 
 fn main() {
@@ -26,23 +26,29 @@ pub struct Speaker {
 
 impl Speaker {
     pub fn load(mut reader: impl Read) -> Result<Self, Error> {
-        // Create an uninitialized Speaker variable
-        let mut speaker = MaybeUninit::<Speaker>::uninit();
+        // Create a Speaker where all the fields are set to some sane default
+        let mut speaker = Speaker {
+            name: [[0; 20]; 2],
+            addr1: [0; 40],
+            addr2: [0; 40],
+            phone: [0; 16],
+            flags: 0,
+        };
 
         // Safety: All the fields in a Speaker are valid for all possible bit
         // combinations.
         unsafe {
             // Get a slice which treats the `speaker` variable as a byte array
             let buffer: &mut [u8] = std::slice::from_raw_parts_mut(
-                speaker.as_mut_ptr().cast(),
+                &mut speaker as *mut Speaker as *mut u8,
                 mem::size_of::<Speaker>(),
             );
 
             // Read exactly that many bytes from the reader
             reader.read_exact(buffer)?;
 
-            // Our `speaker` has now been initialized
-            Ok(speaker.assume_init())
+            // Our `speaker` has now been updated with data from the reader.
+            Ok(speaker)
         }
     }
 
