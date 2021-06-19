@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["c_string",""],["main",""]],"struct":[["Speaker",""]]});
+initSidebarItems({"fn":[["c_string",""],["main",""],["string_field",""]],"struct":[["Speaker",""]]});

@@ -152,17 +152,59 @@
 <span id="150">150</span>
 <span id="151">151</span>
 <span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std</span>::{
+    <span class="ident">fmt</span>::{<span class="self">self</span>, <span class="ident">Debug</span>, <span class="ident">DebugStruct</span>, <span class="ident">Formatter</span>},
+    <span class="ident">fs::File</span>,
     <span class="ident">io</span>::{<span class="ident">Error</span>, <span class="ident">Read</span>, <span class="ident">Write</span>},
     <span class="ident">mem</span>::{<span class="self">self</span>, <span class="ident">MaybeUninit</span>},
 };
 
 <span class="kw">fn</span> <span class="ident">main</span>() {
-    <span class="macro">todo!</span>();
+    <span class="kw">let</span> <span class="ident">args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">std::env::args</span>().<span class="ident">collect</span>();
+    <span class="kw">let</span> <span class="ident">filename</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">get</span>(<span class="number">1</span>).<span class="ident">expect</span>(<span class="string">&quot;Usage: ./main &lt;filename&gt;&quot;</span>);
+
+    <span class="kw">let</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">File::open</span>(<span class="ident">filename</span>).<span class="ident">unwrap</span>();
+    <span class="kw">let</span> <span class="ident">speaker</span> <span class="op">=</span> <span class="ident">Speaker::load</span>(<span class="ident">f</span>).<span class="ident">unwrap</span>();
+
+    <span class="macro">println!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">speaker</span>);
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Speaker</span> {
     <span class="ident">name</span>: [[<span class="ident">u8</span>; <span class="number">20</span>]; <span class="number">2</span>],
@@ -214,17 +256,11 @@
         <span class="prelude-val">Some</span>((<span class="ident">first</span>, <span class="ident">last</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">address_line_1</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
-        <span class="ident">c_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">addr1</span>)
-    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">address_line_1</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> { <span class="ident">c_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">addr1</span>) }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">address_line_2</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
-        <span class="ident">c_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">addr2</span>)
-    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">address_line_2</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> { <span class="ident">c_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">addr2</span>) }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">phone_number</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
-        <span class="ident">c_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">phone</span>)
-    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">phone_number</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> { <span class="ident">c_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">phone</span>) }
 }
 
 <span class="kw">fn</span> <span class="ident">c_string</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
@@ -234,6 +270,40 @@
     };
 
     <span class="ident">std::str::from_utf8</span>(<span class="ident">bytes_without_null</span>).<span class="ident">ok</span>()
+}
+
+<span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Speaker</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        <span class="kw">let</span> <span class="ident">Speaker</span> {
+            <span class="ident">name</span>: [<span class="ident">first</span>, <span class="ident">last</span>],
+            <span class="ident">addr1</span>,
+            <span class="ident">addr2</span>,
+            <span class="ident">phone</span>,
+            <span class="ident">flags</span>,
+        } <span class="op">=</span> <span class="self">self</span>;
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writer</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Speaker&quot;</span>);
+
+        <span class="ident">string_field</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writer</span>, <span class="string">&quot;first_name&quot;</span>, <span class="ident">first</span>);
+        <span class="ident">string_field</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writer</span>, <span class="string">&quot;last_name&quot;</span>, <span class="ident">last</span>);
+        <span class="ident">string_field</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writer</span>, <span class="string">&quot;addr1&quot;</span>, <span class="ident">addr1</span>);
+        <span class="ident">string_field</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writer</span>, <span class="string">&quot;addr2&quot;</span>, <span class="ident">addr2</span>);
+        <span class="ident">string_field</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writer</span>, <span class="string">&quot;phone&quot;</span>, <span class="ident">phone</span>);
+        <span class="ident">writer</span>.<span class="ident">field</span>(<span class="string">&quot;flags&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;{:#x}&quot;</span>, <span class="ident">flags</span>));
+
+        <span class="ident">writer</span>.<span class="ident">finish</span>()
+    }
+}
+
+<span class="kw">fn</span> <span class="ident">string_field</span>(<span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">DebugStruct</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">field</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) {
+    <span class="kw">match</span> <span class="ident">c_string</span>(<span class="ident">field</span>) {
+        <span class="prelude-val">Some</span>(<span class="ident">field</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">f</span>.<span class="ident">field</span>(<span class="ident">name</span>, <span class="kw-2">&amp;</span><span class="ident">field</span>);
+        },
+        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">f</span>.<span class="ident">field</span>(<span class="ident">name</span>, <span class="kw-2">&amp;</span><span class="ident">field</span>);
+        },
+    }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
