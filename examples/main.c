@@ -11,16 +11,7 @@ typedef struct
     char addr1[40];
     char addr2[40];
     char phone[16];
-    char tks[32];
-    char fts[32];
-    char ems;
-    char asn;
-    WORD cng;
-    WORD num;
-    WORD xtp;
-    char blk;
-    char spr;
-    char spare[46];
+    uint16_t flags;
 } spkr;
 
 spkr generate();
@@ -65,6 +56,7 @@ spkr generate()
     strcpy(speaker.addr1, "123 Fake Street");
     strcpy(speaker.addr2, "New York");
     strcpy(speaker.phone, "202-555-0117");
+    speaker.flags = 0xAA0F;
 
     return speaker;
 }
@@ -79,6 +71,7 @@ void print_spkr(const spkr *speaker)
     printf("\t%s\n", speaker->addr2);
 
     printf("Phone: %s\n", speaker->phone);
+    printf("Flags: 0x%04X\n", speaker->flags);
 }
 
 // Read a "spkr" from a file.
