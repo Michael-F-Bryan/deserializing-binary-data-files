@@ -51,11 +51,11 @@ void usage(const char *program)
 spkr generate()
 {
     spkr speaker = {0};
-    strcpy(speaker.name[0], "Joseph");
-    strcpy(speaker.name[1], "Blogs");
-    strcpy(speaker.addr1, "123 Fake Street");
-    strcpy(speaker.addr2, "New York");
-    strcpy(speaker.phone, "202-555-0117");
+    strncpy(speaker.name[0], "Joseph", sizeof(speaker.name[0]) - 1);
+    strncpy(speaker.name[1], "Blogs", sizeof(speaker.name[1]) - 1);
+    strncpy(speaker.addr1, "123 Fake Street", sizeof(speaker.addr1) - 1);
+    strncpy(speaker.addr2, "New York", sizeof(speaker.addr2) - 1);
+    strncpy(speaker.phone, "202-555-0117", sizeof(speaker.phone) - 1);
     speaker.flags = 0xAA0F;
 
     return speaker;
