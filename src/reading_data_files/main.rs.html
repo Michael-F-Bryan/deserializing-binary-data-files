@@ -187,12 +187,18 @@
 <span id="185">185</span>
 <span id="186">186</span>
 <span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fmt</span>::{<span class="self">self</span>, <span class="ident">Debug</span>, <span class="ident">DebugStruct</span>, <span class="ident">Formatter</span>},
     <span class="ident">fs::File</span>,
     <span class="ident">io</span>::{<span class="ident">Error</span>, <span class="ident">Read</span>, <span class="ident">Write</span>},
-    <span class="ident">mem</span>::{<span class="self">self</span>, <span class="ident">MaybeUninit</span>},
+    <span class="ident">mem</span>,
 };
 
 <span class="kw">fn</span> <span class="ident">main</span>() {
@@ -216,23 +222,29 @@
 
 <span class="kw">impl</span> <span class="ident">Speaker</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(<span class="kw-2">mut</span> <span class="ident">reader</span>: <span class="kw">impl</span> <span class="ident">Read</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="comment">// Create an uninitialized Speaker variable</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">speaker</span> <span class="op">=</span> <span class="ident">MaybeUninit</span>::<span class="op">&lt;</span><span class="ident">Speaker</span><span class="op">&gt;</span><span class="ident">::uninit</span>();
+        <span class="comment">// Create a Speaker where all the fields are set to some sane default</span>
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">speaker</span> <span class="op">=</span> <span class="ident">Speaker</span> {
+            <span class="ident">name</span>: [[<span class="number">0</span>; <span class="number">20</span>]; <span class="number">2</span>],
+            <span class="ident">addr1</span>: [<span class="number">0</span>; <span class="number">40</span>],
+            <span class="ident">addr2</span>: [<span class="number">0</span>; <span class="number">40</span>],
+            <span class="ident">phone</span>: [<span class="number">0</span>; <span class="number">16</span>],
+            <span class="ident">flags</span>: <span class="number">0</span>,
+        };
 
         <span class="comment">// Safety: All the fields in a Speaker are valid for all possible bit</span>
         <span class="comment">// combinations.</span>
         <span class="kw">unsafe</span> {
             <span class="comment">// Get a slice which treats the `speaker` variable as a byte array</span>
             <span class="kw">let</span> <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] <span class="op">=</span> <span class="ident">std::slice::from_raw_parts_mut</span>(
-                <span class="ident">speaker</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(),
+                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">speaker</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Speaker</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>,
                 <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">Speaker</span><span class="op">&gt;</span>(),
             );
 
             <span class="comment">// Read exactly that many bytes from the reader</span>
             <span class="ident">reader</span>.<span class="ident">read_exact</span>(<span class="ident">buffer</span>)<span class="question-mark">?</span>;
 
-            <span class="comment">// Our `speaker` has now been initialized</span>
-            <span class="prelude-val">Ok</span>(<span class="ident">speaker</span>.<span class="ident">assume_init</span>())
+            <span class="comment">// Our `speaker` has now been updated with data from the reader.</span>
+            <span class="prelude-val">Ok</span>(<span class="ident">speaker</span>)
         }
     }
 
