@@ -1,3 +1,3 @@
 var N = null;var sourcesIndex = {};
-sourcesIndex["reading_data_files"] = {"name":"","files":["lib.rs"]};
+sourcesIndex["reading_data_files"] = {"name":"","files":["main.rs"]};
 createSourceSidebar();

@@ -1,4 +1,4 @@
 var searchIndex = JSON.parse('{\
-"reading_data_files":{"doc":"","t":[],"n":[],"q":[],"d":[],"i":[],"f":[],"p":[]}\
+"reading_data_files":{"doc":"","t":[3,12,12,11,11,12,11,11,11,11,5,12,12,11,11,11],"n":["Speaker","addr1","addr2","borrow","borrow_mut","flags","fmt","from","into","load","main","name","phone","try_from","try_into","type_id"],"q":["reading_data_files","","","","","","","","","","","","","","",""],"d":["","","","","","","","","","","","","","","",""],"i":[0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1],"f":[null,null,null,[[]],[[]],null,[[["formatter",3]],["result",6]],[[]],[[]],[[],[["result",4],["error",3]]],[[]],null,null,[[],["result",4]],[[],["result",4]],[[],["typeid",3]]],"p":[[3,"Speaker"]]}\
 }');
 if (window.initSearch) {window.initSearch(searchIndex)};
