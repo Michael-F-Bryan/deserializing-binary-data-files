@@ -1,13 +1,20 @@
 use std::{
+    fmt::{self, Debug, DebugStruct, Formatter},
+    fs::File,
     io::{Error, Read, Write},
     mem::{self, MaybeUninit},
 };
 
 fn main() {
-    todo!();
+    let args: Vec<_> = std::env::args().collect();
+    let filename = args.get(1).expect("Usage: ./main <filename>");
+
+    let f = File::open(filename).unwrap();
+    let speaker = Speaker::load(f).unwrap();
+
+    println!("{:?}", speaker);
 }
 
-#[derive(Debug)]
 #[repr(C)]
 pub struct Speaker {
     name: [[u8; 20]; 2],
@@ -59,17 +66,11 @@ impl Speaker {
         Some((first, last))
     }
 
-    pub fn address_line_1(&self) -> Option<&str> {
-        c_string(&self.addr1)
-    }
+    pub fn address_line_1(&self) -> Option<&str> { c_string(&self.addr1) }
 
-    pub fn address_line_2(&self) -> Option<&str> {
-        c_string(&self.addr2)
-    }
+    pub fn address_line_2(&self) -> Option<&str> { c_string(&self.addr2) }
 
-    pub fn phone_number(&self) -> Option<&str> {
-        c_string(&self.phone)
-    }
+    pub fn phone_number(&self) -> Option<&str> { c_string(&self.phone) }
 }
 
 fn c_string(bytes: &[u8]) -> Option<&str> {
@@ -79,6 +80,40 @@ fn c_string(bytes: &[u8]) -> Option<&str> {
     };
 
     std::str::from_utf8(bytes_without_null).ok()
+}
+
+impl Debug for Speaker {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        let Speaker {
+            name: [first, last],
+            addr1,
+            addr2,
+            phone,
+            flags,
+        } = self;
+
+        let mut writer = f.debug_struct("Speaker");
+
+        string_field(&mut writer, "first_name", first);
+        string_field(&mut writer, "last_name", last);
+        string_field(&mut writer, "addr1", addr1);
+        string_field(&mut writer, "addr2", addr2);
+        string_field(&mut writer, "phone", phone);
+        writer.field("flags", &format_args!("{:#x}", flags));
+
+        writer.finish()
+    }
+}
+
+fn string_field(f: &mut DebugStruct<'_, '_>, name: &str, field: &[u8]) {
+    match c_string(field) {
+        Some(field) => {
+            f.field(name, &field);
+        },
+        None => {
+            f.field(name, &field);
+        },
+    }
 }
 
 #[cfg(test)]
