@@ -1,6 +1,6 @@
 # Reading Data Files
 
-[![Continuous integration](https://github.com/Michael-F-Bryan/reading-data-files/workflows/Continuous%20integration/badge.svg?branch=master)](https://github.com/Michael-F-Bryan/reading-data-files/actions)
+[![Continuous integration](https://github.com/Michael-F-Bryan/deserializing-binary-data-files/workflows/Continuous%20integration/badge.svg?branch=master)](https://github.com/Michael-F-Bryan/reading-data-files/actions)
 
 ([API Docs])
 
